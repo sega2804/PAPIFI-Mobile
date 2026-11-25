@@ -1,8 +1,7 @@
 # PAPIFI Android
 
-PAPIFI is a multi-currency fintech app for sending, receiving, holding and exchanging money across borders. This is its native Android client: Kotlin, Jetpack Compose, MVI and Clean Architecture in a modular Gradle project, with a pure-Kotlin domain layer so the later move to Kotlin Multiplatform is a relocation, not a rewrite.
+PAPIFI is a multi-currency fintech app for sending, receiving, holding and exchanging money across borders. This is its mobile client: Kotlin Multiplatform, Jetpack Compose, MVI and Clean Architecture in a modular Gradle project, with a pure-Kotlin domain layer.
 
-> **Status: early scaffold.** The build system, core modules and app shell are written. The first Gradle sync on a developer machine has not happened yet, so expect small fixes. See [`docs/adr/0001-step-1-decisions.md`](docs/adr/0001-step-1-decisions.md).
 
 ## MVP scope
 
@@ -102,14 +101,3 @@ Unit tests run with `./gradlew test`. Pure-Kotlin modules use JUnit 5; Android m
 6. Add money, beneficiaries, send, receive
 7. History, receipts, notifications
 8. Hardening: certificate pinning, Play Integrity, accessibility
-
-Later: migrate shared modules to Kotlin Multiplatform and Compose Multiplatform.
-
-## Documentation
-
-- [Step 1 decisions](docs/adr/0001-step-1-decisions.md)
-- [Font setup](core/designsystem/FONTS.md)
-
-## License
-
-To be decided. Until a license is added, all rights are reserved.
