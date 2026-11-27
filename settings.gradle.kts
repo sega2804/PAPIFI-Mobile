@@ -44,5 +44,7 @@ include(
     ":feature:addmoney",
     ":feature:send",
     ":feature:receive",
+    ":feature:activity",
+    ":feature:support",
     ":app"
 )

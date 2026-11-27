@@ -54,6 +54,8 @@ dependencies {
     implementation(project(":feature:addmoney"))
     implementation(project(":feature:send"))
     implementation(project(":feature:receive"))
+    implementation(project(":feature:activity"))
+    implementation(project(":feature:support"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

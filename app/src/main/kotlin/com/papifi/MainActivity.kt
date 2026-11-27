@@ -21,6 +21,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.papifi.activity.ui.list.ActivityListScreen
+import com.papifi.activity.ui.list.ActivityViewModel
+import com.papifi.activity.ui.receipt.TransactionReceiptScreen
+import com.papifi.activity.ui.receipt.TransactionReceiptViewModel
 import com.papifi.addmoney.ui.bankdetails.NgnBankDetailsScreen
 import com.papifi.addmoney.ui.bankdetails.NgnBankDetailsViewModel
 import com.papifi.addmoney.ui.foreign.ForeignDepositDetailsScreen
@@ -70,6 +74,8 @@ import com.papifi.send.ui.review.SendReviewScreen
 import com.papifi.send.ui.review.SendReviewViewModel
 import com.papifi.send.ui.status.SendStatusScreen
 import com.papifi.send.ui.status.SendStatusViewModel
+import com.papifi.support.ui.SupportScreen
+import com.papifi.support.ui.SupportViewModel
 import com.papifi.wallet.ui.WalletScreen
 import com.papifi.wallet.ui.WalletViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -179,11 +185,42 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToAddMoney = { navController.navigate("add_money") },
                                 onNavigateToSendMoney = { navController.navigate("beneficiaries") },
                                 onReceiveMoney = { navController.navigate("receive") },
-                                onNavigateToActivity = { },
+                                onNavigateToActivity = { navController.navigate("activity") },
                                 onNavigateToProfile = { navController.navigate("profile") },
                                 onNavigateToKyc = { navController.navigate("kyc_start") },
                                 onNavigateToRecipients = { navController.navigate("beneficiaries") },
                                 onNavigateToExchange = { navController.navigate("converter") }
+                            )
+                        }
+
+                        composable("activity") {
+                            val viewModel: ActivityViewModel = koinViewModel()
+                            ActivityListScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToReceipt = { txId -> navController.navigate("transaction_receipt/$txId") }
+                            )
+                        }
+
+                        composable(
+                            route = "transaction_receipt/{txId}",
+                            arguments = listOf(navArgument("txId") { type = NavType.StringType; defaultValue = "" })
+                        ) { backStackEntry ->
+                            val txId = backStackEntry.arguments?.getString("txId") ?: ""
+                            val viewModel: TransactionReceiptViewModel = koinViewModel()
+                            TransactionReceiptScreen(
+                                transactionId = txId,
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToSupport = { ref -> navController.navigate("support") }
+                            )
+                        }
+
+                        composable("support") {
+                            val viewModel: SupportViewModel = koinViewModel()
+                            SupportScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() }
                             )
                         }
 
