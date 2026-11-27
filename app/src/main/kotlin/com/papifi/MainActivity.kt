@@ -45,6 +45,8 @@ import com.papifi.kyc.ui.status.KycStatusScreen
 import com.papifi.kyc.ui.status.KycStatusViewModel
 import com.papifi.profile.ui.ProfileScreen
 import com.papifi.profile.ui.ProfileViewModel
+import com.papifi.wallet.ui.WalletScreen
+import com.papifi.wallet.ui.WalletViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : FragmentActivity() {
@@ -146,34 +148,16 @@ class MainActivity : FragmentActivity() {
                         }
 
                         composable("home") {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                                    modifier = Modifier.padding(16.dp)
-                                ) {
-                                    Text(text = "Welcome to Papifi")
-                                    PapifiButton(
-                                        text = "View Profile & Settings",
-                                        onClick = { navController.navigate("profile") }
-                                    )
-                                    PapifiButton(
-                                        text = "Identity Verification (KYC)",
-                                        onClick = { navController.navigate("kyc_start") }
-                                    )
-                                    PapifiButton(
-                                        text = "Log Out",
-                                        onClick = {
-                                            navController.navigate("login") {
-                                                popUpTo("home") { inclusive = true }
-                                            }
-                                        }
-                                    )
-                                }
-                            }
+                            val walletViewModel: WalletViewModel = koinViewModel()
+                            WalletScreen(
+                                viewModel = walletViewModel,
+                                onNavigateToAddMoney = { },
+                                onNavigateToSendMoney = { },
+                                onNavigateToActivity = { },
+                                onNavigateToProfile = { navController.navigate("profile") },
+                                onNavigateToKyc = { navController.navigate("kyc_start") },
+                                onNavigateToRecipients = { }
+                            )
                         }
 
                         composable("profile") {
