@@ -40,6 +40,7 @@ sealed interface WalletIntent : ViewIntent {
     data object GetUsAccountClicked : WalletIntent
     data object ProfileClicked : WalletIntent
     data object NotificationsClicked : WalletIntent
+    data object ExchangeClicked : WalletIntent
 }
 
 sealed interface WalletEffect : ViewEffect {
@@ -49,6 +50,7 @@ sealed interface WalletEffect : ViewEffect {
     data object NavigateToRecipients : WalletEffect
     data object NavigateToGetUsAccount : WalletEffect
     data object NavigateToProfile : WalletEffect
+    data object NavigateToExchange : WalletEffect
     data class ShowMessage(val message: String) : WalletEffect
 }
 
@@ -74,6 +76,7 @@ class WalletViewModel(
             WalletIntent.GetUsAccountClicked -> setEffect { WalletEffect.NavigateToGetUsAccount }
             WalletIntent.ProfileClicked -> setEffect { WalletEffect.NavigateToProfile }
             WalletIntent.NotificationsClicked -> setEffect { WalletEffect.ShowMessage("Notifications clicked") }
+            WalletIntent.ExchangeClicked -> setEffect { WalletEffect.NavigateToExchange }
         }
     }
 

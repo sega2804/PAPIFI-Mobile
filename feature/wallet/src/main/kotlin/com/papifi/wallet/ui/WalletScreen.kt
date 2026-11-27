@@ -28,7 +28,6 @@ import androidx.compose.material.icons.automirrored.filled.CallReceived
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
@@ -100,7 +99,8 @@ fun WalletScreen(
     onNavigateToActivity: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
     onNavigateToKyc: () -> Unit = {},
-    onNavigateToRecipients: () -> Unit = {}
+    onNavigateToRecipients: () -> Unit = {},
+    onNavigateToExchange: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -114,6 +114,7 @@ fun WalletScreen(
                 WalletEffect.NavigateToRecipients -> onNavigateToRecipients()
                 WalletEffect.NavigateToGetUsAccount -> onNavigateToKyc()
                 WalletEffect.NavigateToProfile -> onNavigateToProfile()
+                WalletEffect.NavigateToExchange -> onNavigateToExchange()
                 is WalletEffect.ShowMessage -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
@@ -165,7 +166,10 @@ fun WalletScreen(
 
             // 5. Exchange Rate Card
             state.exchangeRate?.let { exchangeRate ->
-                ExchangeRateCard(exchangeRate = exchangeRate)
+                ExchangeRateCard(
+                    exchangeRate = exchangeRate,
+                    onExchangeClick = { viewModel.sendIntent(WalletIntent.ExchangeClicked) }
+                )
             }
 
             // 6. Recent Transactions Section
@@ -584,7 +588,8 @@ private fun UsBankAccountBanner(
 
 @Composable
 private fun ExchangeRateCard(
-    exchangeRate: ExchangeRate
+    exchangeRate: ExchangeRate,
+    onExchangeClick: () -> Unit = {}
 ) {
     val gradientBrush = Brush.horizontalGradient(
         colors = listOf(
@@ -598,6 +603,7 @@ private fun ExchangeRateCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
             .background(gradientBrush)
+            .clickable(onClick = onExchangeClick)
             .padding(16.dp)
     ) {
         Row(

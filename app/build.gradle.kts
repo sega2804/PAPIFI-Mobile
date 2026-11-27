@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:kyc"))
     implementation(project(":feature:wallet"))
+    implementation(project(":feature:exchange"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

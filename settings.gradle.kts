@@ -40,5 +40,6 @@ include(
     ":feature:profile",
     ":feature:kyc",
     ":feature:wallet",
+    ":feature:exchange",
     ":app"
 )

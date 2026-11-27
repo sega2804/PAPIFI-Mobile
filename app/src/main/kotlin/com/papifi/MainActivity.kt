@@ -35,6 +35,10 @@ import com.papifi.auth.ui.signup.SignUpScreen
 import com.papifi.auth.ui.signup.SignUpViewModel
 import com.papifi.designsystem.PapifiButton
 import com.papifi.designsystem.PapifiTheme
+import com.papifi.exchange.ui.converter.CurrencyConverterScreen
+import com.papifi.exchange.ui.converter.CurrencyConverterViewModel
+import com.papifi.exchange.ui.quote.ExecutableQuoteScreen
+import com.papifi.exchange.ui.quote.ExecutableQuoteViewModel
 import com.papifi.kyc.ui.document.KycDocumentUploadScreen
 import com.papifi.kyc.ui.document.KycDocumentUploadViewModel
 import com.papifi.kyc.ui.selfie.KycSelfieScreen
@@ -43,6 +47,7 @@ import com.papifi.kyc.ui.start.KycStartScreen
 import com.papifi.kyc.ui.start.KycStartViewModel
 import com.papifi.kyc.ui.status.KycStatusScreen
 import com.papifi.kyc.ui.status.KycStatusViewModel
+import com.papifi.model.Currency
 import com.papifi.profile.ui.ProfileScreen
 import com.papifi.profile.ui.ProfileViewModel
 import com.papifi.wallet.ui.WalletScreen
@@ -156,7 +161,49 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToActivity = { },
                                 onNavigateToProfile = { navController.navigate("profile") },
                                 onNavigateToKyc = { navController.navigate("kyc_start") },
-                                onNavigateToRecipients = { }
+                                onNavigateToRecipients = { },
+                                onNavigateToExchange = { navController.navigate("converter") }
+                            )
+                        }
+
+                        composable("converter") {
+                            val viewModel: CurrencyConverterViewModel = koinViewModel()
+                            CurrencyConverterScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToQuote = { fromCurrency, toCurrency, amountMinor ->
+                                    navController.navigate("executable_quote/${fromCurrency.code}/${toCurrency.code}/$amountMinor")
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "executable_quote/{fromCurrency}/{toCurrency}/{amount}",
+                            arguments = listOf(
+                                navArgument("fromCurrency") { type = NavType.StringType; defaultValue = "USD" },
+                                navArgument("toCurrency") { type = NavType.StringType; defaultValue = "NGN" },
+                                navArgument("amount") { type = NavType.LongType; defaultValue = 0L }
+                            )
+                        ) { backStackEntry ->
+                            val fromCurrencyStr = backStackEntry.arguments?.getString("fromCurrency") ?: "USD"
+                            val toCurrencyStr = backStackEntry.arguments?.getString("toCurrency") ?: "NGN"
+                            val amountMinor = backStackEntry.arguments?.getLong("amount") ?: 0L
+
+                            val fromCurrency = try { Currency.valueOf(fromCurrencyStr) } catch (_: Exception) { Currency.USD }
+                            val toCurrency = try { Currency.valueOf(toCurrencyStr) } catch (_: Exception) { Currency.NGN }
+
+                            val viewModel: ExecutableQuoteViewModel = koinViewModel()
+                            ExecutableQuoteScreen(
+                                fromCurrency = fromCurrency,
+                                toCurrency = toCurrency,
+                                fromAmountMinor = amountMinor,
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToHome = {
+                                    navController.navigate("home") {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                }
                             )
                         }
 
