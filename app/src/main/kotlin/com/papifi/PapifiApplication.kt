@@ -6,6 +6,7 @@ import com.papifi.auth.di.authModule
 import com.papifi.exchange.di.exchangeModule
 import com.papifi.kyc.di.kycModule
 import com.papifi.profile.di.profileModule
+import com.papifi.send.di.sendModule
 import com.papifi.wallet.di.walletModule
 import com.papifi.security.AndroidBiometricAuthenticator
 import com.papifi.security.AndroidSecureStore
@@ -23,7 +24,7 @@ class PapifiApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@PapifiApplication)
-            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule, addMoneyModule)
+            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule, addMoneyModule, sendModule)
         }
     }
 

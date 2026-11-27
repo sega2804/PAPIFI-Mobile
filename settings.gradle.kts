@@ -42,5 +42,6 @@ include(
     ":feature:wallet",
     ":feature:exchange",
     ":feature:addmoney",
+    ":feature:send",
     ":app"
 )

@@ -58,6 +58,16 @@ import com.papifi.kyc.ui.status.KycStatusViewModel
 import com.papifi.model.Currency
 import com.papifi.profile.ui.ProfileScreen
 import com.papifi.profile.ui.ProfileViewModel
+import com.papifi.send.domain.TransferRoute
+import com.papifi.send.ui.amount.SendAmountScreen
+import com.papifi.send.ui.amount.SendAmountViewModel
+import com.papifi.send.ui.beneficiaries.BeneficiaryListScreen
+import com.papifi.send.ui.beneficiaries.BeneficiaryViewModel
+import com.papifi.send.ui.destination.TransferDestinationScreen
+import com.papifi.send.ui.review.SendReviewScreen
+import com.papifi.send.ui.review.SendReviewViewModel
+import com.papifi.send.ui.status.SendStatusScreen
+import com.papifi.send.ui.status.SendStatusViewModel
 import com.papifi.wallet.ui.WalletScreen
 import com.papifi.wallet.ui.WalletViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -165,11 +175,11 @@ class MainActivity : FragmentActivity() {
                             WalletScreen(
                                 viewModel = walletViewModel,
                                 onNavigateToAddMoney = { navController.navigate("add_money") },
-                                onNavigateToSendMoney = { },
+                                onNavigateToSendMoney = { navController.navigate("beneficiaries") },
                                 onNavigateToActivity = { },
                                 onNavigateToProfile = { navController.navigate("profile") },
                                 onNavigateToKyc = { navController.navigate("kyc_start") },
-                                onNavigateToRecipients = { },
+                                onNavigateToRecipients = { navController.navigate("beneficiaries") },
                                 onNavigateToExchange = { navController.navigate("converter") }
                             )
                         }
@@ -314,6 +324,85 @@ class MainActivity : FragmentActivity() {
                         composable("funding_pending") {
                             val viewModel: FundingPendingViewModel = koinViewModel()
                             FundingPendingScreen(
+                                viewModel = viewModel,
+                                onNavigateToWallet = {
+                                    navController.navigate("home") {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable("beneficiaries") {
+                            val viewModel: BeneficiaryViewModel = koinViewModel()
+                            BeneficiaryListScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToDestination = { beneficiaryId ->
+                                    navController.navigate("send_destination")
+                                }
+                            )
+                        }
+
+                        composable("send_destination") {
+                            TransferDestinationScreen(
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToAmount = { route ->
+                                    navController.navigate("send_amount/${route.name}")
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "send_amount/{route}",
+                            arguments = listOf(navArgument("route") { type = NavType.StringType; defaultValue = "LOCAL_BANK" })
+                        ) { backStackEntry ->
+                            val routeStr = backStackEntry.arguments?.getString("route") ?: "LOCAL_BANK"
+                            val route = try { TransferRoute.valueOf(routeStr) } catch (_: Exception) { TransferRoute.LOCAL_BANK }
+                            val viewModel: SendAmountViewModel = koinViewModel()
+                            SendAmountScreen(
+                                route = route,
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToReview = { selectedRoute, amountMinor, note ->
+                                    navController.navigate("send_review/1/$amountMinor")
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "send_review/{recipientId}/{amount}",
+                            arguments = listOf(
+                                navArgument("recipientId") { type = NavType.StringType; defaultValue = "1" },
+                                navArgument("amount") { type = NavType.LongType; defaultValue = 0L }
+                            )
+                        ) { backStackEntry ->
+                            val recipientId = backStackEntry.arguments?.getString("recipientId") ?: "1"
+                            val amountMinor = backStackEntry.arguments?.getLong("amount") ?: 0L
+                            val viewModel: SendReviewViewModel = koinViewModel()
+                            SendReviewScreen(
+                                recipientId = recipientId,
+                                route = TransferRoute.LOCAL_BANK,
+                                amountMinor = amountMinor,
+                                note = "",
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToStatus = { ref ->
+                                    navController.navigate("send_status/$ref") {
+                                        popUpTo("home") { inclusive = false }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "send_status/{ref}",
+                            arguments = listOf(navArgument("ref") { type = NavType.StringType; defaultValue = "" })
+                        ) { backStackEntry ->
+                            val ref = backStackEntry.arguments?.getString("ref") ?: ""
+                            val viewModel: SendStatusViewModel = koinViewModel()
+                            SendStatusScreen(
+                                transactionReference = ref,
                                 viewModel = viewModel,
                                 onNavigateToWallet = {
                                     navController.navigate("home") {
