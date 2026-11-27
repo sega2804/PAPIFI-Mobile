@@ -1,10 +1,11 @@
 package com.papifi
 
 import android.app.Application
-import com.papifi.security.AndroidSecureStore
+import com.papifi.auth.di.authModule
 import com.papifi.security.AndroidBiometricAuthenticator
-import com.papifi.security.SecureStore
+import com.papifi.security.AndroidSecureStore
 import com.papifi.security.BiometricAuthenticator
+import com.papifi.security.SecureStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,7 @@ class PapifiApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@PapifiApplication)
-            modules(appModule)
+            modules(appModule, authModule)
         }
     }
 

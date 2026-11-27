@@ -36,5 +36,6 @@ include(
     ":core:ui",
     ":core:network",
     ":core:security",
+    ":feature:auth",
     ":app"
 )
