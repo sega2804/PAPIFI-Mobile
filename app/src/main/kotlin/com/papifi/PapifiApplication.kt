@@ -1,6 +1,7 @@
 package com.papifi
 
 import android.app.Application
+import com.papifi.addmoney.di.addMoneyModule
 import com.papifi.auth.di.authModule
 import com.papifi.exchange.di.exchangeModule
 import com.papifi.kyc.di.kycModule
@@ -22,7 +23,7 @@ class PapifiApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@PapifiApplication)
-            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule)
+            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule, addMoneyModule)
         }
     }
 

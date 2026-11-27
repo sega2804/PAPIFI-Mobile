@@ -41,5 +41,6 @@ include(
     ":feature:kyc",
     ":feature:wallet",
     ":feature:exchange",
+    ":feature:addmoney",
     ":app"
 )

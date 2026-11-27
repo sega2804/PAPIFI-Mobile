@@ -21,6 +21,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.papifi.addmoney.ui.bankdetails.NgnBankDetailsScreen
+import com.papifi.addmoney.ui.bankdetails.NgnBankDetailsViewModel
+import com.papifi.addmoney.ui.foreign.ForeignDepositDetailsScreen
+import com.papifi.addmoney.ui.foreign.ForeignDepositDetailsViewModel
+import com.papifi.addmoney.ui.pending.FundingPendingScreen
+import com.papifi.addmoney.ui.pending.FundingPendingViewModel
+import com.papifi.addmoney.ui.selector.AddMoneySelectorScreen
+import com.papifi.addmoney.ui.selector.AddMoneySelectorViewModel
 import com.papifi.auth.ui.login.LoginScreen
 import com.papifi.auth.ui.login.LoginViewModel
 import com.papifi.auth.ui.onboarding.OnboardingScreen
@@ -156,7 +164,7 @@ class MainActivity : FragmentActivity() {
                             val walletViewModel: WalletViewModel = koinViewModel()
                             WalletScreen(
                                 viewModel = walletViewModel,
-                                onNavigateToAddMoney = { },
+                                onNavigateToAddMoney = { navController.navigate("add_money") },
                                 onNavigateToSendMoney = { },
                                 onNavigateToActivity = { },
                                 onNavigateToProfile = { navController.navigate("profile") },
@@ -262,6 +270,54 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToStart = {
                                     navController.navigate("kyc_start") {
                                         popUpTo("kyc_status") { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable("add_money") {
+                            val viewModel: AddMoneySelectorViewModel = koinViewModel()
+                            AddMoneySelectorScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToNgnBankDetails = { navController.navigate("ngn_bank_details") },
+                                onNavigateToForeignDepositDetails = { currency: Currency ->
+                                    navController.navigate("foreign_deposit_details/${currency.code}")
+                                }
+                            )
+                        }
+
+                        composable("ngn_bank_details") {
+                            val viewModel: NgnBankDetailsViewModel = koinViewModel()
+                            NgnBankDetailsScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToPending = { navController.navigate("funding_pending") }
+                            )
+                        }
+
+                        composable(
+                            route = "foreign_deposit_details/{currency}",
+                            arguments = listOf(navArgument("currency") { type = NavType.StringType; defaultValue = "USD" })
+                        ) { backStackEntry ->
+                            val currencyStr = backStackEntry.arguments?.getString("currency") ?: "USD"
+                            val currency = try { Currency.valueOf(currencyStr) } catch (_: Exception) { Currency.USD }
+                            val viewModel: ForeignDepositDetailsViewModel = koinViewModel()
+                            ForeignDepositDetailsScreen(
+                                currency = currency,
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToPending = { navController.navigate("funding_pending") }
+                            )
+                        }
+
+                        composable("funding_pending") {
+                            val viewModel: FundingPendingViewModel = koinViewModel()
+                            FundingPendingScreen(
+                                viewModel = viewModel,
+                                onNavigateToWallet = {
+                                    navController.navigate("home") {
+                                        popUpTo("home") { inclusive = true }
                                     }
                                 }
                             )
