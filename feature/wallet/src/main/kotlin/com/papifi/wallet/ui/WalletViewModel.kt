@@ -35,6 +35,7 @@ sealed interface WalletIntent : ViewIntent {
     data object RefreshData : WalletIntent
     data object AddMoneyClicked : WalletIntent
     data object SendMoneyClicked : WalletIntent
+    data object ReceiveMoneyClicked : WalletIntent
     data object TransactionsClicked : WalletIntent
     data object RecipientsClicked : WalletIntent
     data object GetUsAccountClicked : WalletIntent
@@ -46,6 +47,7 @@ sealed interface WalletIntent : ViewIntent {
 sealed interface WalletEffect : ViewEffect {
     data object NavigateToAddMoney : WalletEffect
     data object NavigateToSendMoney : WalletEffect
+    data object NavigateToReceive : WalletEffect
     data object NavigateToActivity : WalletEffect
     data object NavigateToRecipients : WalletEffect
     data object NavigateToGetUsAccount : WalletEffect
@@ -71,6 +73,7 @@ class WalletViewModel(
             WalletIntent.RefreshData -> loadData()
             WalletIntent.AddMoneyClicked -> setEffect { WalletEffect.NavigateToAddMoney }
             WalletIntent.SendMoneyClicked -> setEffect { WalletEffect.NavigateToSendMoney }
+            WalletIntent.ReceiveMoneyClicked -> setEffect { WalletEffect.NavigateToReceive }
             WalletIntent.TransactionsClicked -> setEffect { WalletEffect.NavigateToActivity }
             WalletIntent.RecipientsClicked -> setEffect { WalletEffect.NavigateToRecipients }
             WalletIntent.GetUsAccountClicked -> setEffect { WalletEffect.NavigateToGetUsAccount }

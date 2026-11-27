@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Warning
@@ -96,6 +97,7 @@ fun WalletScreen(
     viewModel: WalletViewModel = koinViewModel(),
     onNavigateToAddMoney: () -> Unit = {},
     onNavigateToSendMoney: () -> Unit = {},
+    onReceiveMoney: () -> Unit = {},
     onNavigateToActivity: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
     onNavigateToKyc: () -> Unit = {},
@@ -110,6 +112,7 @@ fun WalletScreen(
             when (effect) {
                 WalletEffect.NavigateToAddMoney -> onNavigateToAddMoney()
                 WalletEffect.NavigateToSendMoney -> onNavigateToSendMoney()
+                WalletEffect.NavigateToReceive -> onReceiveMoney()
                 WalletEffect.NavigateToActivity -> onNavigateToActivity()
                 WalletEffect.NavigateToRecipients -> onNavigateToRecipients()
                 WalletEffect.NavigateToGetUsAccount -> onNavigateToKyc()
@@ -155,8 +158,8 @@ fun WalletScreen(
                 onToggleVisibility = { viewModel.sendIntent(WalletIntent.ToggleBalanceVisibility) },
                 onAddMoney = { viewModel.sendIntent(WalletIntent.AddMoneyClicked) },
                 onSendMoney = { viewModel.sendIntent(WalletIntent.SendMoneyClicked) },
-                onTransactions = { viewModel.sendIntent(WalletIntent.TransactionsClicked) },
-                onRecipients = { viewModel.sendIntent(WalletIntent.RecipientsClicked) }
+                onReceiveMoney = { viewModel.sendIntent(WalletIntent.ReceiveMoneyClicked) },
+                onNavigateToExchange = { viewModel.sendIntent(WalletIntent.ExchangeClicked) }
             )
 
             // 4. US Bank Account Banner
@@ -322,8 +325,8 @@ private fun BalanceCard(
     onToggleVisibility: () -> Unit,
     onAddMoney: () -> Unit,
     onSendMoney: () -> Unit,
-    onTransactions: () -> Unit,
-    onRecipients: () -> Unit
+    onReceiveMoney: () -> Unit,
+    onNavigateToExchange: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -463,15 +466,15 @@ private fun BalanceCard(
                     modifier = Modifier.weight(1f)
                 )
                 QuickActionTile(
-                    title = "Transactions",
-                    icon = Icons.Default.ReceiptLong,
-                    onClick = onTransactions,
+                    title = "Receive Money",
+                    icon = Icons.AutoMirrored.Filled.CallReceived,
+                    onClick = onReceiveMoney,
                     modifier = Modifier.weight(1f)
                 )
                 QuickActionTile(
-                    title = "Recipients",
-                    icon = Icons.Default.People,
-                    onClick = onRecipients,
+                    title = "Exchange",
+                    icon = Icons.Default.SwapHoriz,
+                    onClick = onNavigateToExchange,
                     modifier = Modifier.weight(1f)
                 )
             }

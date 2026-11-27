@@ -58,6 +58,8 @@ import com.papifi.kyc.ui.status.KycStatusViewModel
 import com.papifi.model.Currency
 import com.papifi.profile.ui.ProfileScreen
 import com.papifi.profile.ui.ProfileViewModel
+import com.papifi.receive.ui.ReceiveScreen
+import com.papifi.receive.ui.ReceiveViewModel
 import com.papifi.send.domain.TransferRoute
 import com.papifi.send.ui.amount.SendAmountScreen
 import com.papifi.send.ui.amount.SendAmountViewModel
@@ -176,11 +178,20 @@ class MainActivity : FragmentActivity() {
                                 viewModel = walletViewModel,
                                 onNavigateToAddMoney = { navController.navigate("add_money") },
                                 onNavigateToSendMoney = { navController.navigate("beneficiaries") },
+                                onReceiveMoney = { navController.navigate("receive") },
                                 onNavigateToActivity = { },
                                 onNavigateToProfile = { navController.navigate("profile") },
                                 onNavigateToKyc = { navController.navigate("kyc_start") },
                                 onNavigateToRecipients = { navController.navigate("beneficiaries") },
                                 onNavigateToExchange = { navController.navigate("converter") }
+                            )
+                        }
+
+                        composable("receive") {
+                            val viewModel: ReceiveViewModel = koinViewModel()
+                            ReceiveScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() }
                             )
                         }
 
