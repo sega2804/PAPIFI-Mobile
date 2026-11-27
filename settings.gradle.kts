@@ -37,5 +37,7 @@ include(
     ":core:network",
     ":core:security",
     ":feature:auth",
+    ":feature:profile",
+    ":feature:kyc",
     ":app"
 )

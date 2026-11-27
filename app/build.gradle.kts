@@ -47,6 +47,8 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:security"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:kyc"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

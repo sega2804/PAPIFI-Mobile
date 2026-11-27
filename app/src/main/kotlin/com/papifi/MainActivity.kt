@@ -35,6 +35,16 @@ import com.papifi.auth.ui.signup.SignUpScreen
 import com.papifi.auth.ui.signup.SignUpViewModel
 import com.papifi.designsystem.PapifiButton
 import com.papifi.designsystem.PapifiTheme
+import com.papifi.kyc.ui.document.KycDocumentUploadScreen
+import com.papifi.kyc.ui.document.KycDocumentUploadViewModel
+import com.papifi.kyc.ui.selfie.KycSelfieScreen
+import com.papifi.kyc.ui.selfie.KycSelfieViewModel
+import com.papifi.kyc.ui.start.KycStartScreen
+import com.papifi.kyc.ui.start.KycStartViewModel
+import com.papifi.kyc.ui.status.KycStatusScreen
+import com.papifi.kyc.ui.status.KycStatusViewModel
+import com.papifi.profile.ui.ProfileScreen
+import com.papifi.profile.ui.ProfileViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : FragmentActivity() {
@@ -142,9 +152,18 @@ class MainActivity : FragmentActivity() {
                             ) {
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                                    modifier = Modifier.padding(16.dp)
                                 ) {
                                     Text(text = "Welcome to Papifi")
+                                    PapifiButton(
+                                        text = "View Profile & Settings",
+                                        onClick = { navController.navigate("profile") }
+                                    )
+                                    PapifiButton(
+                                        text = "Identity Verification (KYC)",
+                                        onClick = { navController.navigate("kyc_start") }
+                                    )
                                     PapifiButton(
                                         text = "Log Out",
                                         onClick = {
@@ -155,6 +174,66 @@ class MainActivity : FragmentActivity() {
                                     )
                                 }
                             }
+                        }
+
+                        composable("profile") {
+                            val viewModel: ProfileViewModel = koinViewModel()
+                            ProfileScreen(
+                                viewModel = viewModel,
+                                onNavigateToLogin = {
+                                    navController.navigate("login") {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                },
+                                onNavigateToKycStart = { navController.navigate("kyc_start") },
+                                onNavigateToKycStatus = { navController.navigate("kyc_status") }
+                            )
+                        }
+
+                        composable("kyc_start") {
+                            val viewModel: KycStartViewModel = koinViewModel()
+                            KycStartScreen(
+                                viewModel = viewModel,
+                                onNavigateToDocumentUpload = { navController.navigate("kyc_document") },
+                                onNavigateToStatus = { navController.navigate("kyc_status") }
+                            )
+                        }
+
+                        composable("kyc_document") {
+                            val viewModel: KycDocumentUploadViewModel = koinViewModel()
+                            KycDocumentUploadScreen(
+                                viewModel = viewModel,
+                                onNavigateToSelfie = { navController.navigate("kyc_selfie") }
+                            )
+                        }
+
+                        composable("kyc_selfie") {
+                            val viewModel: KycSelfieViewModel = koinViewModel()
+                            KycSelfieScreen(
+                                viewModel = viewModel,
+                                onNavigateToStatus = {
+                                    navController.navigate("kyc_status") {
+                                        popUpTo("kyc_start") { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable("kyc_status") {
+                            val viewModel: KycStatusViewModel = koinViewModel()
+                            KycStatusScreen(
+                                viewModel = viewModel,
+                                onNavigateToHome = {
+                                    navController.navigate("home") {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                },
+                                onNavigateToStart = {
+                                    navController.navigate("kyc_start") {
+                                        popUpTo("kyc_status") { inclusive = true }
+                                    }
+                                }
+                            )
                         }
                     }
                 }
