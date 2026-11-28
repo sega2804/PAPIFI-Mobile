@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.papifi.designsystem.PapifiButton
+import com.papifi.designsystem.PapifiWordmark
 
 private fun Context.findFragmentActivity(): FragmentActivity? {
     var context = this
@@ -87,6 +88,10 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            PapifiWordmark(size = 48.dp)
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
                 text = "Welcome Back",
                 style = MaterialTheme.typography.headlineLarge,

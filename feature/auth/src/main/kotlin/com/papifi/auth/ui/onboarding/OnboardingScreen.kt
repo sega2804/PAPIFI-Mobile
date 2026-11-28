@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.papifi.designsystem.PapifiButton
+import com.papifi.designsystem.PapifiWordmark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,12 +77,7 @@ fun OnboardingScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "PAPIFI",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                PapifiWordmark(size = 32.dp)
 
                 TextButton(onClick = { viewModel.sendIntent(OnboardingIntent.SkipClicked) }) {
                     Text(

@@ -85,7 +85,8 @@ fun NgnBankDetailsScreen(
                         )
                     }
                 }
-            ),
+            )
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
