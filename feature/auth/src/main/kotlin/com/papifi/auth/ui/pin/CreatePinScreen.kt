@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.papifi.security.SecureScreenEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +40,7 @@ fun CreatePinScreen(
     onNavigateToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    SecureScreenEffect()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {

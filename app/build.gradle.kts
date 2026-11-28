@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":feature:receive"))
     implementation(project(":feature:activity"))
     implementation(project(":feature:support"))
+    implementation(project(":feature:notifications"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

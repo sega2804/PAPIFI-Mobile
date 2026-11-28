@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.composeCompiler)
 }
 
 android {
@@ -18,11 +19,20 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.biometric)
+
+    api(libs.compose.runtime)
+    api(libs.compose.ui)
+    api(libs.compose.material3)
+    implementation(libs.kotlinx.coroutines.core)
 }

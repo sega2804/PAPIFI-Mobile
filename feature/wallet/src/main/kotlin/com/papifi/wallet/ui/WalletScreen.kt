@@ -72,6 +72,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.papifi.designsystem.PapifiPrimary
 import com.papifi.model.Currency
 import com.papifi.model.TransactionStatus
+import com.papifi.security.SecureScreenEffect
 import com.papifi.ui.MoneyFormatter
 import com.papifi.wallet.domain.ExchangeRate
 import com.papifi.wallet.domain.TransactionSummary
@@ -102,8 +103,10 @@ fun WalletScreen(
     onNavigateToProfile: () -> Unit = {},
     onNavigateToKyc: () -> Unit = {},
     onNavigateToRecipients: () -> Unit = {},
-    onNavigateToExchange: () -> Unit = {}
+    onNavigateToExchange: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {}
 ) {
+    SecureScreenEffect()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -118,6 +121,7 @@ fun WalletScreen(
                 WalletEffect.NavigateToGetUsAccount -> onNavigateToKyc()
                 WalletEffect.NavigateToProfile -> onNavigateToProfile()
                 WalletEffect.NavigateToExchange -> onNavigateToExchange()
+                WalletEffect.NavigateToNotifications -> onNavigateToNotifications()
                 is WalletEffect.ShowMessage -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }

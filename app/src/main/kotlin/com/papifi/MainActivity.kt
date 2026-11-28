@@ -76,6 +76,8 @@ import com.papifi.send.ui.status.SendStatusScreen
 import com.papifi.send.ui.status.SendStatusViewModel
 import com.papifi.support.ui.SupportScreen
 import com.papifi.support.ui.SupportViewModel
+import com.papifi.notifications.ui.NotificationsScreen
+import com.papifi.notifications.ui.NotificationsViewModel
 import com.papifi.wallet.ui.WalletScreen
 import com.papifi.wallet.ui.WalletViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -189,7 +191,16 @@ class MainActivity : FragmentActivity() {
                                 onNavigateToProfile = { navController.navigate("profile") },
                                 onNavigateToKyc = { navController.navigate("kyc_start") },
                                 onNavigateToRecipients = { navController.navigate("beneficiaries") },
-                                onNavigateToExchange = { navController.navigate("converter") }
+                                onNavigateToExchange = { navController.navigate("converter") },
+                                onNavigateToNotifications = { navController.navigate("notifications") }
+                            )
+                        }
+
+                        composable("notifications") {
+                            val viewModel: NotificationsViewModel = koinViewModel()
+                            NotificationsScreen(
+                                viewModel = viewModel,
+                                onNavigateBack = { navController.popBackStack() }
                             )
                         }
 

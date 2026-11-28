@@ -10,6 +10,7 @@ import com.papifi.profile.di.profileModule
 import com.papifi.receive.di.receiveModule
 import com.papifi.send.di.sendModule
 import com.papifi.support.di.supportModule
+import com.papifi.notifications.di.notificationModule
 import com.papifi.wallet.di.walletModule
 import com.papifi.security.AndroidBiometricAuthenticator
 import com.papifi.security.AndroidSecureStore
@@ -27,7 +28,7 @@ class PapifiApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@PapifiApplication)
-            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule, addMoneyModule, sendModule, receiveModule, activityModule, supportModule)
+            modules(appModule, authModule, profileModule, kycModule, walletModule, exchangeModule, addMoneyModule, sendModule, receiveModule, activityModule, supportModule, notificationModule)
         }
     }
 

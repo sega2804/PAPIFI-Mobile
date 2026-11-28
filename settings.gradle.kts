@@ -46,5 +46,6 @@ include(
     ":feature:receive",
     ":feature:activity",
     ":feature:support",
+    ":feature:notifications",
     ":app"
 )
